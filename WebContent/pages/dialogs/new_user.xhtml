@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog id="dialog_new_user" widgetVar="userNewDialog" modal="true" draggable="false"
+		resizable="false" closable="false" header="Nuevo Usuario de Operaciones" closeOnEscape="true">
+		<h:form id="form_new">
+			<p:panel styleClass="panel_user" id="panel_new">
+				<p:growl />
+				<p:messages id="messages_new_user" />
+				<h:panelGrid columns="4" cellspacing="5" cellpadding="5"
+					style="margin-left: auto; margin-right: auto;">
+					<p:outputLabel value="Cedula" for="identity" />
+					<p:inputText id="identity" value="#{operation.userNew.cedula}" required="true" maxlength="15">
+						<f:validateLength minimum="1" maximum="15" />
+					</p:inputText>
+
+					<p:outputLabel value="Nombre" for="name" />
+					<p:inputText id="name" value="#{operation.userNew.nombre}" styleClass="upper-case"
+						required="true" />
+
+					<p:outputLabel value="Compañia" for="company" />
+					<p:inputText id="company" value="#{operation.userNew.compania}" styleClass="upper-case"
+						required="true" />
+
+					<p:outputLabel value="SAP" for="SAP" />
+					<p:inputText id="SAP" value="#{operation.userNew.sap}" required="true" />
+
+					<p:outputLabel value="Email" for="email" />
+					<p:inputText id="email" value="#{operation.userNew.email}"
+						validatorMessage="Formato de Correo Invalido email@example.com" required="true">
+						<f:validateRegex
+							pattern="^(?:[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})|)$" />
+					</p:inputText>
+
+					<p:outputLabel value="Número Celular" for="phone" />
+					<p:inputText id="phone" value="#{operation.userNew.phone}" maxlength="10" required="true">
+						<f:validateLength minimum="10" maximum="10" />
+					</p:inputText>
+
+					<p:outputLabel for="estado" value="Estado" />
+					<p:selectOneMenu id="estado" value="#{operation.userNew.estado}" style="width:125px"
+						required="true">
+						<f:selectItems value="#{operation.listState}" var="status" itemValue="#{status.value}"
+							itemLabel="#{status.name}" />
+					</p:selectOneMenu>
+
+					<br />
+					<f:facet name="footer">
+						<h:panelGrid columns="2" style="width: 350px; margin-left: auto; margin-right: auto;">
+							<p:commandButton value="Crear" styleClass="button_login button_operation"
+								actionListener="#{operation.newUser}" update=":form_new:panel_new, :form_list:panel_list" />
+							<p:commandButton process="@this" value="Cerrar" oncomplete="PF('userNewDialog').hide();"
+								styleClass="button_login button_operation" update=":form_new" immediate="true">
+								<p:resetInput target=" :form_new" />
+							</p:commandButton>
+						</h:panelGrid>
+					</f:facet>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</p:dialog>
+</ui:composition>

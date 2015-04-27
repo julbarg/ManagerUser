@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog widgetVar="auditViewDialog" modal="true" draggable="false" resizable="false"
+		closable="false" header="Auditoria del Registro" closeOnEscape="true" styleClass="dialog_audit">
+		<h:form id="form_audit">
+			<p:panel styleClass="panel_audit" id="data_audit">
+				<h:panelGrid columns="1" id="panel_list_allowed">
+					<p:dataTable var="audit" value="#{operation.listAudit}" filterEvent="enter"
+						paginatorPosition="bottom" rows="15" paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+						<p:column headerText="Columna" sortBy="#{audit.columnName}">
+							<h:outputText value="#{audit.columnName}" styleClass="td-table-list" />
+						</p:column>
+						<p:column headerText="Valor Anterior" width="200">
+							<h:outputText value="#{audit.oldValue}" styleClass="td-table-list" />
+						</p:column>
+						<p:column headerText="Valor Nuevo" width="200">
+							<h:outputText value="#{audit.newValue}" styleClass="td-table-list" />
+						</p:column>
+						<p:column headerText="Usuario">
+							<h:outputText value="#{audit.user}" styleClass="td-table-list" />
+						</p:column>
+						<p:column headerText="Fecha" sortBy="#{audit.date}" width="150">
+							<h:outputText value="#{audit.date}" styleClass="td-table-list" />
+						</p:column>
+					</p:dataTable>
+					<f:facet name="footer">
+						<p:commandButton value="Cerrar" styleClass="button_login button_operation"
+							onclick="PF('auditViewDialog').hide()" immediate="true" />
+					</f:facet>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</p:dialog>
+</ui:composition>

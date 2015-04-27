@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Administración de Usuarios Operaciones</title>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputScript library="primefaces" name="jquery/jquery.js" />
+	<h:outputScript library="js" name="manager.js" />
+</h:head>
+<h:body>
+	<ui:include src="dialogs/new_user.xhtml" />
+	<ui:include src="dialogs/edit_user.xhtml" />
+	<ui:include src="dialogs/config_user_allowed.xhtml" />
+	<ui:include src="dialogs/masiv_user.xhtml" />
+	<ui:include src="dialogs/audit.xhtml" />
+	<ui:include src="dialogs/audit_all.xhtml" />
+	<ui:include src="dialogs/manual.xhtml" />
+	<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false"
+		resizable="false" showHeader="false">
+		<p:graphicImage library="images" name="loading.gif" />
+	</p:dialog>
+	<div id="div_login">
+		<h:form id="form_login">
+			<p:panel id="panel_login" styleClass="panel_login" closable="true" toggleable="true">
+				<p:growl />
+				<h:panelGrid>
+					<h:graphicImage library="images" name="logo.gif" alt="logo_claro" styleClass="image_login" />
+					<p:effect type="bounce" event="load" for="panel_login">
+						<f:param name="distance" value="'10'" />
+					</p:effect>
+					<p:inputText id="user_name" label="Nombre de Usuario" styleClass="input_login"
+						value="#{login.user.userName}" required="true" />
+					<p:watermark value="Nombre de Usuario" for="user_name" />
+					<p:message id="msg1" for="user_name" styleClass="message-login" />
+
+					<p:password id="password" label="Contraseña" styleClass="input_login"
+						value="#{login.user.password}" required="true" />
+					<p:watermark value="Contraseña" for="password" />
+					<p:message id="msg2" for="password" styleClass="message-login" />
+
+					<f:facet name="footer">
+						<p:commandButton styleClass="button_login" value="Iniciar Sesión"
+							actionListener="#{login.login}" update="panel_login, :panel_manager"
+							oncomplete="handleLoginRequest(xhr, status, args)" />
+					</f:facet>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</div>
+	<div id="div_manager" style="display: none;">
+		<p:panel id="panel_manager" styleClass="panel_manager" closable="true" toggleable="true">
+			<h:form id="form_buttons">
+				<h:panelGrid columns="5" columnClasses="logo,logout,logout,logout" styleClass="header">
+					<h:graphicImage library="images" name="logo.gif" alt="logo_claro" height="50" />
+
+					<p:commandButton id="audit_all" onclick="PF('auditAll').show();" value="Auditoria"
+						title="Auditoria" rendered="#{operation.admin}" action="#{operation.viewAllAudit}"
+						update=":form_audit_all">
+						<p:tooltip for="audit_all" />
+					</p:commandButton>
+					<p:commandButton id="config_user" onclick="PF('configUser').show();" value="Config"
+						title="Configuración de Usaurios Permitidos" rendered="#{operation.admin}"
+						action="#{operation.searchUserAllowed}" update=":user_allowed">
+						<p:tooltip for="config_user" />
+					</p:commandButton>
+					<p:commandButton id="manual" onclick="PF('manual').show();" value="Ayuda"
+						title="Manual de Usuario">
+						<p:tooltip for="manual" />
+					</p:commandButton>
+					<p:commandButton id="logout" actionListener="#{login.logout}" value="X"
+						oncomplete="handleCloseRequest()" title="Cerrar Sesión" immediate="true"
+						action="#{operation.closeSesion}">
+						<p:tooltip for="logout" />
+					</p:commandButton>
+
+				</h:panelGrid>
+			</h:form>
+
+			<h:form id="form_filtro" enctype="multipart/form-data">
+				<p:growl />
+				<p:panel styleClass="panel_search">
+					<h:panelGrid columns="4" cellspacing="8">
+						<p:outputLabel value="Nombre" for="name" />
+						<p:inputText id="name" value="#{operation.filterUserOperations.name}" />
+
+						<p:outputLabel value="Cedula" for="identity" />
+						<p:inputText id="identity" value="#{operation.filterUserOperations.identity}" />
+
+						<p:outputLabel value="Compañia" for="company" />
+						<p:inputText id="company" value="#{operation.filterUserOperations.company}" />
+
+						<p:outputLabel value="SAP" for="SAP" />
+						<p:inputText id="SAP" value="#{operation.filterUserOperations.SAP}" />
+
+						<p:outputLabel value="Número Celular" for="phone" />
+						<p:inputText id="phone" value="#{operation.filterUserOperations.phone}" />
+
+						<p:outputLabel for="estado" value="Estado" />
+						<p:selectOneMenu id="estado" value="#{operation.filterUserOperations.estado}"
+							style="width:125px">
+							<f:selectItem itemLabel="Seleccione.." itemValue="" />
+							<f:selectItems value="#{operation.listState}" var="status" itemValue="#{status.value}"
+								itemLabel="#{status.name}" />
+						</p:selectOneMenu>
+
+						<f:facet name="footer">
+							<h:panelGrid columns="3" style="width: 350px; margin-left: auto; margin-right: auto;">
+								<p:commandButton value="Consultar" styleClass="button_login button_operation"
+									actionListener="#{operation.searchUser}" update=":form_list:panel_list" />
+								<p:commandButton value="Nuevo Usuario" styleClass="button_login button_operation"
+									action="#{operation.loadNew}" onclick="PF('userNewDialog').show()"
+									update=":form_new:panel_new" />
+								<p:commandButton value="Carga Masiva" styleClass="button_login button_operation"
+									onclick="PF('userFileDialog').show()" update=":form_file:panel_file" />
+							</h:panelGrid>
+						</f:facet>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+			<h:form id="form_list">
+				<p:growl />
+				<p:dataTable id="panel_list" var="userOperation" value="#{operation.listUserOperation}"
+					paginatorPosition="bottom" rows="10" paginator="true" selection="#{operation.listUserSelect}"
+					rowKey="#{userOperation.id}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,20,50">
+
+					<f:facet name="header">
+						<p:commandButton value="Descargar" id="button_download"
+							style="text-align: left; display: block;" ajax="false">
+							<p:dataExporter type="xls" postProcessor="#{operation.postProcessUsuarioXLS}"
+								target="panel_list" fileName="UsuariosOperacion-#{operation.getToday()}" />
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="Nombre" sortBy="#{userOperation.nombre}">
+						<h:outputText value="#{userOperation.nombre}" styleClass="td-table-list" />
+					</p:column>
+
+					<p:column headerText="Cedula" sortBy="#{userOperation.cedula}">
+						<h:outputText value="#{userOperation.cedula}" styleClass="td-table-list" />
+					</p:column>
+
+					<p:column headerText="Compañia" sortBy="#{userOperation.compania}">
+						<h:outputText value="#{userOperation.compania}" styleClass="td-table-list" />
+					</p:column>
+
+					<p:column headerText="SAP" sortBy="#{userOperation.sap}">
+						<h:outputText value="#{userOperation.sap}" styleClass="td-table-list" />
+					</p:column>
+
+					<p:column headerText="Número de Celular">
+						<h:outputText value="#{userOperation.phone}" styleClass="td-table-list" />
+					</p:column>
+
+					<p:column headerText="Email" width="0" styleClass="invisible">
+						<h:outputText value="#{userOperation.email}" styleClass="td-table-list" />
+					</p:column>
+
+					<p:column headerText="Estado" sortBy="#{userOperation.estado}">
+						<h:outputText id="estado" value="#{userOperation.estado}" styleClass="td-table-list">
+							<f:converter converterId="stateConverter" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Estado Contrasena" width="0" styleClass="invisible">
+						<h:outputText id="estadoContrasena" value="#{userOperation.estadoContrasena}">
+							<f:converter converterId="statePasswordConverter" />
+						</h:outputText>
+					</p:column>
+
+					<p:column width="70" exportable="false">
+						<p:commandButton update=":form_edit:panel_edit" oncomplete="PF('userEditDialog').show()"
+							icon="ui-icon-pencil" title="Editar" action="#{operation.loadEdit}">
+							<f:setPropertyActionListener value="#{userOperation.id}" target="#{operation.idSelected}" />
+						</p:commandButton>
+						<p:commandButton update=":form_audit:data_audit" oncomplete="PF('auditViewDialog').show();"
+							icon="ui-icon-calendar" title="Auditoria" action="#{operation.viewAudit}"
+							rendered="#{operation.admin}">
+							<f:setPropertyActionListener value="#{userOperation.id}" target="#{operation.idSelected}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+	</div>
+</h:body>
+</html>

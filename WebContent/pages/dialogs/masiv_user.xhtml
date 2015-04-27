@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog id="dialog_file_user" widgetVar="userFileDialog" modal="true" draggable="false"
+		resizable="false" closable="false" header="Carga Masiva Usuario de Operaciones"
+		closeOnEscape="true">
+		<h:form id="form_file" enctype="multipart/form-data">
+			<p:panel styleClass="panel_user" id="panel_file">
+				<p:growl />
+				<p:messages id="messages_file_user" />
+				<h:panelGrid columns="2" cellspacing="4" cellpadding="1"
+					style="margin-left: auto; margin-right: auto;">
+					<p:fileUpload fileUploadListener="#{operation.cargarArchivo}" mode="advanced"
+						invalidFileMessage="Tipo de Archivo Invalido (*.txt)" label="Buscar" sizeLimit="1048576"
+						update=":form_file:panel_file, :form_list:panel_list" allowTypes="/(\.|\/)(txt)$/"
+						cancelLabel="Cancelar" uploadLabel="Cargar Archivo"
+						invalidSizeMessage="Tamaño de Archivo Invalido (max 1 MB)" />
+
+					<br />
+					<f:facet name="footer">
+						<h:panelGrid columns="2" style="width: 350px; margin-left: auto; margin-right: auto;">
+							<p:commandButton value="Procesar Archivo" styleClass="button_login button_operation"
+								actionListener="#{operation.procesarArchivo}"
+								update=":form_file:panel_file, :form_list:panel_list" />
+							<p:commandButton value="Cerrar" styleClass="button_login button_operation"
+								onclick="PF('userFileDialog').hide()" immediate="true" />
+						</h:panelGrid>
+					</f:facet>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</p:dialog>
+</ui:composition>

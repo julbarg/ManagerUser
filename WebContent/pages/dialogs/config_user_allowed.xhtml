@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="Configuración de Usaurios Permitidos" widgetVar="configUser" modal="true"
+		resizable="false" draggable="false" width="560" height="430" position="center"
+		closeOnEscape="true">
+		<h:form id="user_allowed">
+			<p:growl />
+			<p:panel styleClass="panel_user_allowed">
+				<p:messages id="messages_allowed" />
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Nombre de Usuario: " for="user_name" />
+					<p:inputText id="user_name" value="#{operation.userAllowed.userNameAllowed}" required="true"
+						label="Nombre de Usuario" />
+					<p:outputLabel value="Administrador: " />
+					<p:selectOneMenu id="admin" value="#{operation.userAllowed.admin}" style="width:125px"
+						required="true">
+						<f:selectItems value="#{operation.listConfirmation}" var="confirmation"
+							itemValue="#{confirmation.value}" itemLabel="#{confirmation.name}" />
+					</p:selectOneMenu>
+					<f:facet name="footer">
+						<p:commandButton value="Crear" action="#{operation.saveUserAllowed}" update=":user_allowed" />
+					</f:facet>
+				</h:panelGrid>
+				<br />
+
+				<h:panelGrid columns="1" id="panel_list_allowed">
+					<p:dataTable id="panel_list_user_allowed" var="userAllow" value="#{operation.listUserAllowed}"
+						filterEvent="enter" paginatorPosition="bottom" rows="5" paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+						<p:column headerText="Nombre de Usuario Permitido" sortBy="#{userAllow.userNameAllowed}"
+							filterBy="#{userAllow.userNameAllowed}" filterMatchMode="contains">
+							<h:outputText value="#{userAllow.userNameAllowed}" styleClass="td-table-list" />
+						</p:column>
+						<p:column headerText="Administrador">
+							<h:outputText value="#{userAllow.admin}" styleClass="td-table-list">
+								<f:converter converterId="confirmationConverter" />
+							</h:outputText>
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</p:dialog>
+</ui:composition>

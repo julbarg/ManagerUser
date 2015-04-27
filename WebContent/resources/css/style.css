@@ -1,0 +1,210 @@
+@CHARSET "ISO-8859-1";
+
+* {
+	font-size: 13px;
+}
+
+.panel_login {
+	width: 400px;
+	padding: 40px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 120px;
+	padding: 40px 40px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 120px;
+	background-color: #F7F7F7;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.panel_manager {
+	width: 980px;
+	height: 780px;
+	max-height: 10240px;
+	padding: 40px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 40px;
+	margin-bottom: 40px;
+	padding: 40px 40px;
+	background-color: #F7F7F7;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+	display: block;
+}
+
+.panel_search {
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #F7F7F7;
+	border: 0;
+}
+
+.panel_login .ui-panel-content table {
+	border-spacing: 0;
+}
+
+.panel_user {
+	width: 620px;
+	padding: 0px;
+	background-color: #F7F7F7;
+}
+
+.input_login {
+	width: 310px;
+	height: 42px;
+	font-size: 16px;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	display: block !important;
+	padding-left: 8px !important;
+	padding-right: 8px !important;
+}
+
+.image_login {
+	width: 100%;
+}
+
+.button_login {
+	background-color: #D02E10 !important;
+	background-image: linear-gradient(0deg, #901A11 0%, #D02E10 100%)
+		!important;
+	box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+	color: #FFF !important;
+	width: 324px;
+	height: 42px;
+	margin-bottom: 30px !important;
+	margin-top: 30px !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	display: block !important;
+}
+
+.button_login .ui-button-text {
+	font-style: normal !important;
+	font-size: 12px;
+}
+
+.ui-message-error-detail {
+	font-size: 12px;
+}
+
+.button_operation {
+	width: 150px !important;
+	display: inline-block !important;
+	margin-top: 5px !important;
+	margin-bottom: 5px !important;
+	height: 32px !important;
+}
+
+.ui-selectonemenu-label {
+	width: 100px !important;
+}
+
+.ui-dialog-content {
+	padding: 0px !important;
+}
+
+.ui-dialog-titlebar {
+	background-color: #D02E10 !important;
+	background-image: linear-gradient(0deg, #901A11 0%, #D02E10 100%)
+		!important;
+	box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+	color: #FFF !important;
+}
+
+.ui-dialog-title {
+	font-size: 12px !important;
+}
+
+.upper-case {
+	text-transform: uppercase;
+}
+
+.logo {
+	width: 95%;
+}
+
+.logout {
+	width: 4%;
+	text-align: center !important;
+}
+
+.ui-commandlink {
+	font-size: 22px !important;
+	color: #D02E10 !important;
+	text-decoration: none !important;
+	font-weight: bold !important;
+	text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7) !important;
+	text-align: center !important;
+}
+
+.header {
+	width: 100%;
+}
+
+.td-table-list {
+	font-size: 11px !important;
+}
+
+.ui-paginator-page {
+	font-size: 11px !important;
+}
+
+.ui-paginator-current {
+	font-size: 11px !important;
+}
+
+.ui-paginator-rpp-options {
+	font-size: 11px !important;
+}
+
+.disabled {
+	background-color: #BDBDBD !important;
+	font-size: 11px !important;
+	text-shadow: none !important;
+	opacity: 1 !important;
+}
+
+.panel_user_allowed {
+	width: 550px;
+	height: 420px;
+	padding: 0px;
+	background-color: #F7F7F7;
+	padding: 0px;
+}
+
+.panel_audit_all {
+	width: 890px;
+	height: 590px;
+	padding: 0px;
+	background-color: #F7F7F7;
+	padding: 0px;
+}
+
+.panel_audit {
+	width: 870px;
+	padding: 0px;
+	background-color: #F7F7F7;
+}
+
+.dialog_audit {
+	top: 45px !important;
+}
+
+.ui-column-title {
+	font-size: 13px !important;
+}
+
+.ui-button-texts {
+	font-size: 13px !important;
+}
+
+.invisible {
+	width: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+	border-width: 0px !important;
+}

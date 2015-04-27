@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="Configuración de Usaurios Permitidos" widgetVar="auditAll" modal="true"
+		resizable="false" draggable="false" width="900" height="600" position="center"
+		closeOnEscape="true">
+		<h:form id="form_audit_all">
+			<p:growl />
+			<p:panel>
+				<p:dataTable id="panel_list_all_audit" var="auditRow" value="#{operation.listAuditAll}"
+					paginatorPosition="bottom" rows="15" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+					<f:facet name="header">
+						<p:commandButton value="Descargar" id="button_download" style="text-align: left; display: block;"
+							ajax="false">
+							<p:dataExporter type="xls" postProcessor="#{operation.postProcessXLS}"
+								target="panel_list_all_audit" fileName="Auditoria Usuario de Operaciones" />
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="Tabla">
+						<h:outputText value="#{auditRow.tabla}" styleClass="td-table-list" />
+					</p:column>
+					<p:column headerText="Columna">
+						<h:outputText value="#{auditRow.columna}" styleClass="td-table-list" />
+					</p:column>
+					<p:column headerText="Registro">
+						<h:outputText value="#{auditRow.registro}" styleClass="td-table-list" />
+					</p:column>
+					<p:column headerText="Valor Anterior">
+						<h:outputText value="#{auditRow.valorAnterior}" styleClass="td-table-list" />
+					</p:column>
+					<p:column headerText="Valor Nuevo">
+						<h:outputText value="#{auditRow.valorNuevo}" styleClass="td-table-list" />
+					</p:column>
+					<p:column headerText="Usuario">
+						<h:outputText value="#{auditRow.user}" styleClass="td-table-list" />
+					</p:column>
+					<p:column headerText="Fecha" width="150">
+						<h:outputText value="#{auditRow.fecha}" styleClass="td-table-list" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</p:dialog>
+</ui:composition>

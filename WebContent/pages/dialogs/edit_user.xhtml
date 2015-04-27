@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog widgetVar="userEditDialog" modal="true" draggable="false" resizable="false"
+		closable="false" header="Edición Usuario de Operaciones" closeOnEscape="true" position="center">
+		<h:form id="form_edit">
+			<p:panel styleClass="panel_user" id="panel_edit">
+				<p:growl />
+				<p:messages />
+				<h:panelGrid columns="4" cellspacing="5" cellpadding="5"
+					style="margin-left: auto; margin-right: auto;">
+
+					<p:outputLabel value="Cedula" for="identity" />
+					<p:inputText id="identity" value="#{operation.selectedUser.cedula}" required="true" />
+
+					<p:outputLabel value="Nombre" for="name" />
+					<p:inputText id="name" value="#{operation.selectedUser.nombre}" required="true"
+						styleClass="upper-case" />
+
+					<p:outputLabel value="Compañia" for="company" />
+					<p:inputText id="company" value="#{operation.selectedUser.compania}" required="true"
+						styleClass="upper-case" />
+
+					<p:outputLabel value="SAP" for="sap" />
+					<p:inputText id="sap" value="#{operation.selectedUser.sap}" required="true" />
+
+					<p:outputLabel value="Email" for="email" />
+					<p:inputText id="email" value="#{operation.selectedUser.email}" required="true"
+						validatorMessage="Formato de Correo Invalido email@example.com">
+						<f:validateRegex
+							pattern="^(?:[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})|)$" />
+					</p:inputText>
+
+					<p:outputLabel value="Número de Celular" for="phone" />
+					<p:inputText id="phone" value="#{operation.selectedUser.phone}" maxlength="10">
+						<f:validateLength minimum="10" maximum="10" />
+					</p:inputText>
+
+					<p:outputLabel for="estado" value="Estado" />
+					<p:selectOneMenu id="estado" value="#{operation.selectedUser.estado}" style="width:125px"
+						required="true">
+						<f:selectItems value="#{operation.listState}" var="status" itemValue="#{status.value}"
+							itemLabel="#{status.name}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Estado Contraseña" for="estadoContrasena" />
+					<p:selectOneMenu id="estadoContrasena" value="#{operation.selectedUser.estadoContrasena}"
+						style="width:125px" required="true">
+						<f:selectItems value="#{operation.listStatePassword}" var="statusPassword"
+							itemValue="#{statusPassword.value}" itemLabel="#{statusPassword.name}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Usuario de Creación" />
+					<p:inputText value="#{operation.selectedUser.userCreate}" disabled="true" styleClass="disabled" />
+					<p:outputLabel value="Fecha de Creación" />
+					<p:inputText value="#{operation.selectedUser.dateCreate}" disabled="true" styleClass="disabled" />
+					<p:outputLabel value="Usuario de Modificación" />
+					<p:inputText value="#{operation.selectedUser.userUpdate}" disabled="true" styleClass="disabled" />
+					<p:outputLabel value="Fecha de Modificación" />
+					<p:inputText value="#{operation.selectedUser.dateUpdate}" disabled="true" styleClass="disabled" />
+
+					<f:facet name="footer">
+						<h:panelGrid columns="2" style="width: 350px; margin-left: auto; margin-right: auto;">
+							<p:commandButton value="Editar" actionListener="#{operation.editUser}"
+								update=":form_edit:panel_edit, :form_list:panel_list"
+								styleClass="button_login button_operation" />
+							<p:commandButton process="@this" value="Cerrar" oncomplete="PF('userEditDialog').hide();"
+								styleClass="button_login button_operation" update=":form_edit">
+								<p:resetInput target=" :form_edit" />
+							</p:commandButton>
+						</h:panelGrid>
+					</f:facet>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</p:dialog>
+</ui:composition>
