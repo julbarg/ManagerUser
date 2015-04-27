@@ -84,8 +84,10 @@ public class UserOperationDAO extends AbstractDAO<UsuarioOperacionEntity> implem
 
    /**
     * Encontrar usuario por id
+    * jbarragan
     */
    public UsuarioOperacionEntity findById(int id) throws Exception {
+      System.out.println("Test");
       return entityManager.find(UsuarioOperacionEntity.class, id);
    }
 
