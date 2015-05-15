@@ -34,7 +34,8 @@ public class UserAllowedDAO extends AbstractDAO<UserAllowedEntity> implements Us
    @Override
    public ArrayList<UserAllowedEntity> findAll() throws Exception {
       ArrayList<UserAllowedEntity> results = new ArrayList<UserAllowedEntity>();
-      TypedQuery<UserAllowedEntity> query = entityManager.createNamedQuery("UserAllowedEntity.findAll", UserAllowedEntity.class);
+      TypedQuery<UserAllowedEntity> query = entityManager.createNamedQuery("UserAllowedEntity.findAll",
+         UserAllowedEntity.class);
       results = (ArrayList<UserAllowedEntity>) query.getResultList();
 
       return results;
