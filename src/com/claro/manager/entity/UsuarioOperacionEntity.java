@@ -55,6 +55,11 @@ public class UsuarioOperacionEntity implements Serializable {
 
    private Long sap;
 
+   private String cargo;
+
+   @Column(name = "consulta_por_cuenta")
+   private String consultaPorCuenta;
+
    @Column(name = "user_create")
    private String userCreate;
 
@@ -174,6 +179,22 @@ public class UsuarioOperacionEntity implements Serializable {
 
    public void setUserUpdate(String userUpdate) {
       this.userUpdate = userUpdate;
+   }
+
+   public String getCargo() {
+      return cargo;
+   }
+
+   public void setCargo(String cargo) {
+      this.cargo = cargo;
+   }
+
+   public String getConsultaPorCuenta() {
+      return consultaPorCuenta;
+   }
+
+   public void setConsultaPorCuenta(String consultaPorCuenta) {
+      this.consultaPorCuenta = consultaPorCuenta;
    }
 
 }

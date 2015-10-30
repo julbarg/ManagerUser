@@ -98,6 +98,17 @@
 						<p:outputLabel value="Número Celular" for="phone" />
 						<p:inputText id="phone" value="#{operation.filterUserOperations.phone}" />
 
+						<p:outputLabel value="Cargo" for="cargo" />
+						<p:inputText id="cargo" value="#{operation.filterUserOperations.cargo}" />
+
+						<p:outputLabel for="consultaPorCuenta" value="Cosulta Por Cuenta" />
+						<p:selectOneMenu id="consultaPorCuenta"
+							value="#{operation.filterUserOperations.consultaPorCuenta}" style="width:125px">
+							<f:selectItem itemLabel="Seleccione.." itemValue="" />
+							<f:selectItems value="#{operation.listConsultaPorCuenta}" var="cuenta"
+								itemValue="#{cuenta.value}" itemLabel="#{cuenta.name}" />
+						</p:selectOneMenu>
+
 						<p:outputLabel for="estado" value="Estado" />
 						<p:selectOneMenu id="estado" value="#{operation.filterUserOperations.estado}"
 							style="width:125px">
@@ -158,6 +169,16 @@
 
 					<p:column headerText="Email" width="0" styleClass="invisible">
 						<h:outputText value="#{userOperation.email}" styleClass="td-table-list" />
+					</p:column>
+
+					<p:column headerText="Cargo">
+						<h:outputText value="#{userOperation.cargo}" styleClass="td-table-list" />
+					</p:column>
+
+					<p:column headerText="Consulta Por Cuenta" width="0" styleClass="invisible">
+						<h:outputText id="consultaPorCuentaCol" value="#{userOperation.consultaPorCuenta}">
+							<f:converter converterId="consultaPorCuentaConverter" />
+						</h:outputText>
 					</p:column>
 
 					<p:column headerText="Estado" sortBy="#{userOperation.estado}">

@@ -35,6 +35,8 @@ public class UserOperationDAO extends AbstractDAO<UsuarioOperacionEntity> implem
       comandQuery = validateString(comandQuery, userOperation.getEstado(), "u.estado LIKE '%");
       comandQuery = validateString(comandQuery, userOperation.getEmail(), "u.email LIKE '%");
       comandQuery = validateString(comandQuery, userOperation.getPhone(), "u.phone LIKE '%");
+      comandQuery = validateString(comandQuery, userOperation.getCargo(), "u.cargo LIKE '%");
+      comandQuery = validateString(comandQuery, userOperation.getConsultaPorCuenta(), "u.consultaPorCuenta LIKE '%");
 
       comandQuery.append(" 1 = 1");
 

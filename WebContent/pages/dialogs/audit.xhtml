@@ -10,7 +10,7 @@
 					<p:dataTable var="audit" value="#{operation.listAudit}" filterEvent="enter"
 						paginatorPosition="bottom" rows="15" paginator="true"
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
-						<p:column headerText="Columna" sortBy="#{audit.columnName}">
+						<p:column headerText="Columna" sortBy="#{audit.columnName}" width="120">
 							<h:outputText value="#{audit.columnName}" styleClass="td-table-list" />
 						</p:column>
 						<p:column headerText="Valor Anterior" width="200">

@@ -2,26 +2,31 @@ package com.claro.manager.dto;
 
 import java.io.Serializable;
 
+
 public class FilterUserOperationsDTO implements Serializable {
 
    /**
     * 
     */
    private static final long serialVersionUID = 712503469641827745L;
-   
+
    private String name;
-   
+
    private Long identity;
-   
+
    private String company;
-   
+
    private Long SAP;
-   
+
    private String estado;
-   
+
    private String email;
-   
+
    private String phone;
+
+   private String cargo;
+
+   private String consultaPorCuenta;
 
    public String getName() {
       return name;
@@ -77,6 +82,22 @@ public class FilterUserOperationsDTO implements Serializable {
 
    public void setPhone(String phone) {
       this.phone = phone;
+   }
+
+   public String getCargo() {
+      return cargo;
+   }
+
+   public void setCargo(String cargo) {
+      this.cargo = cargo;
+   }
+
+   public String getConsultaPorCuenta() {
+      return consultaPorCuenta;
+   }
+
+   public void setConsultaPorCuenta(String consultaPorCuenta) {
+      this.consultaPorCuenta = consultaPorCuenta;
    }
 
 }

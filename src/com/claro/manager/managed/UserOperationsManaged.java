@@ -24,6 +24,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import com.claro.manager.dto.AuditDTO;
+import com.claro.manager.dto.ConfirmationDTO;
 import com.claro.manager.dto.FilterUserOperationsDTO;
 import com.claro.manager.ejb.ProcessFileRemote;
 import com.claro.manager.ejb.UserOperationsEJBRemote;
@@ -79,9 +80,15 @@ public class UserOperationsManaged implements Serializable {
 
    private ArrayList<AuditEntity> listAudit;
 
+   private ArrayList<ConfirmationDTO> listConsultaPorCuenta;
+
    private int idSelected;
 
    private ArrayList<AuditDTO> listAuditAll;
+
+   private boolean consultaPorCuenta;
+
+   private String porCuenta;
 
    @PostConstruct
    private void initialize() {
@@ -97,6 +104,10 @@ public class UserOperationsManaged implements Serializable {
       listStatePassword = StatePasswordEnum.getList();
       listConfirmation = ConfirmationEnum.getList();
       searchUserAllowed();
+
+      listConsultaPorCuenta = new ArrayList<ConfirmationDTO>();
+      listConsultaPorCuenta.add(new ConfirmationDTO("Si", "S"));
+      listConsultaPorCuenta.add(new ConfirmationDTO("No", "N"));
    }
 
    public boolean searchUser() {
@@ -121,9 +132,12 @@ public class UserOperationsManaged implements Serializable {
          return false;
       RequestContext context = RequestContext.getCurrentInstance();
       try {
+         String porCuenta = consultaPorCuenta ? "S" : "N";
+         userNew.setConsultaPorCuenta(porCuenta);
          userNew = userOperationsEJB.newUser(userNew);
          listUserOperation.add(userNew);
          userNew = new UsuarioOperacionEntity();
+         consultaPorCuenta = false;
          context.execute("PF('userNewDialog').hide();");
          Util.addMessageInfo(Messages.USER_CREATE);
       } catch (Exception e) {
@@ -139,8 +153,7 @@ public class UserOperationsManaged implements Serializable {
          if (e.getLocalizedMessage().contains(Messages.EMAIL_UNIQUE)) {
             exceptionMessage = error + ". \n" + Messages.EMAIL_UNIQUE_MESSAGE + (user != null ? user.getEmail() : "");
          } else if (e.getLocalizedMessage().contains(Messages.CEDULA_UNIQUE)) {
-            exceptionMessage = error + ". \n" + Messages.CEDULA_UNIQUE_MESSAGE
-               + (user != null ? user.getCedula().toString() : "");
+            exceptionMessage = error + ". \n" + Messages.CEDULA_UNIQUE_MESSAGE + (user != null ? user.getCedula().toString() : "");
          }
       }
       Util.addMessageFatal(exceptionMessage);
@@ -198,8 +211,11 @@ public class UserOperationsManaged implements Serializable {
          return false;
       RequestContext context = RequestContext.getCurrentInstance();
       try {
+         String porCuenta = consultaPorCuenta ? "S" : "N";
+         selectedUser.setConsultaPorCuenta(porCuenta);
          selectedUser = userOperationsEJB.editUser(selectedUser);
          context.execute("PF('userEditDialog').hide();");
+         consultaPorCuenta = false;
          Util.addMessageInfo(Messages.USER_EDIT);
          searchUser();
       } catch (Exception e) {
@@ -259,6 +275,7 @@ public class UserOperationsManaged implements Serializable {
    public void loadEdit() {
       try {
          selectedUser = userOperationsEJB.viewUser(idSelected);
+         consultaPorCuenta = selectedUser.getConsultaPorCuenta() != null && selectedUser.getConsultaPorCuenta().equals("S") ? true : false;
       } catch (Exception e) {
          Util.addMessageFatal(Messages.VIEW_USER_ERROR);
          LOGGER.error(Messages.VIEW_USER_ERROR, e);
@@ -430,5 +447,29 @@ public class UserOperationsManaged implements Serializable {
    public String getToday() {
       String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
       return today;
+   }
+
+   public boolean isConsultaPorCuenta() {
+      return consultaPorCuenta;
+   }
+
+   public void setConsultaPorCuenta(boolean consultaPorCuenta) {
+      this.consultaPorCuenta = consultaPorCuenta;
+   }
+
+   public String getPorCuenta() {
+      return porCuenta;
+   }
+
+   public void setPorCuenta(String porCuenta) {
+      this.porCuenta = porCuenta;
+   }
+
+   public ArrayList<ConfirmationDTO> getListConsultaPorCuenta() {
+      return listConsultaPorCuenta;
+   }
+
+   public void setListConsultaPorCuenta(ArrayList<ConfirmationDTO> listConsultaPorCuenta) {
+      this.listConsultaPorCuenta = listConsultaPorCuenta;
    }
 }

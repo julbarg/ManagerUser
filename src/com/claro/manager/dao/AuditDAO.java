@@ -43,6 +43,8 @@ public class AuditDAO extends AbstractDAO<AuditEntity> implements AuditDAORemote
       saveAudit(userNew, "phone", userNew.getPhone());
       saveAudit(userNew, "estado", userNew.getEstado());
       saveAudit(userNew, "estado_contrasena", userNew.getEstadoContrasena());
+      saveAudit(userNew, "cargo", userNew.getCargo());
+      saveAudit(userNew, "consulta_por_cuenta", userNew.getConsultaPorCuenta());
 
    }
 
@@ -78,10 +80,13 @@ public class AuditDAO extends AbstractDAO<AuditEntity> implements AuditDAORemote
 
       createAuditTemplate(userOld, "estado_contrasena", userOld.getEstadoContrasena(), userUpdate.getEstadoContrasena());
 
+      createAuditTemplate(userOld, "cargo", userOld.getCargo(), userUpdate.getCargo());
+
+      createAuditTemplate(userOld, "consulta_por_cuenta", userOld.getConsultaPorCuenta(), userUpdate.getConsultaPorCuenta());
+
    }
 
-   private void createAuditTemplate(UsuarioOperacionEntity user, String columnName, Object oldValue, Object newValue)
-      throws Exception {
+   private void createAuditTemplate(UsuarioOperacionEntity user, String columnName, Object oldValue, Object newValue) throws Exception {
       if (isDiferent(oldValue, newValue)) {
          AuditEntity audit = new AuditEntity();
          audit.setTableName(Constante.USUARIO_OPERACION_TABLE);

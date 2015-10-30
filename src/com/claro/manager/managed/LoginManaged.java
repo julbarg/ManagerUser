@@ -59,7 +59,9 @@ public class LoginManaged implements Serializable {
          loginIn = false;
       }
       context.addCallbackParam(Constante.LOGGED_IN, loginIn);
-      // test();
+
+      // TODO
+      test();
 
       return loginIn;
    }

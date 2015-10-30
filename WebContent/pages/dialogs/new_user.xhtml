@@ -38,6 +38,12 @@
 						<f:validateLength minimum="10" maximum="10" />
 					</p:inputText>
 
+					<p:outputLabel value="Cargo" for="cargo" />
+					<p:inputText id="cargo" value="#{operation.userNew.cargo}" />
+
+					<p:outputLabel value="Consultar por Cuenta" for="consultaPorCuenta" />
+					<p:selectBooleanButton id="consultaPorCuenta" value="#{operation.consultaPorCuenta}"
+						onLabel="Si" offLabel="No" style="width:60px" />
 					<p:outputLabel for="estado" value="Estado" />
 					<p:selectOneMenu id="estado" value="#{operation.userNew.estado}" style="width:125px"
 						required="true">
