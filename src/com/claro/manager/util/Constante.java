@@ -16,4 +16,8 @@ public class Constante {
 
    public static final String OK = "OK";
 
+   public static final String SI = "S";
+
+   public static final String NO = "N";
+
 }

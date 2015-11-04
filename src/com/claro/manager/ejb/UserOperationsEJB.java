@@ -45,6 +45,7 @@ public class UserOperationsEJB implements UserOperationsEJBRemote {
       userNew.setCompania(Util.upperCase(userNew.getCompania()));
       userNew.setEstadoContrasena(StatePasswordEnum.CEDULA.getValue());
       userNew.setContrasena(userNew.getCedula().toString());
+      userNew.setCargo(Util.upperCase(userNew.getCargo()));
       String userName = Util.getUserName();
       userNew.setUserCreate(userName);
       userNew.setDateCreate(new Date());

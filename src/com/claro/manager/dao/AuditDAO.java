@@ -117,7 +117,7 @@ public class AuditDAO extends AbstractDAO<AuditEntity> implements AuditDAORemote
       try {
          result = ((BigInteger) value).toString();
       } catch (Exception e) {
-         LOGGER.error("Error setValueBigInt" + e.getMessage());
+         LOGGER.error("Error setValueBigInt" + e.getMessage(), e);
       }
       return result;
    }

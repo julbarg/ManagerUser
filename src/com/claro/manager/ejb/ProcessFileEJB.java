@@ -81,7 +81,9 @@ public class ProcessFileEJB implements ProcessFileRemote {
          StringTokenizer token = new StringTokenizer(lineUser, ",");
          UsuarioOperacionEntity user = new UsuarioOperacionEntity();
 
-         user.setNombre((String) token.nextElement());
+         String nombre = (String) token.nextElement();
+         nombre = nombre.toUpperCase();
+         user.setNombre(nombre);
 
          String cedula = (String) token.nextElement();
          Long cedulaL = Long.parseLong(cedula.trim());
@@ -91,12 +93,22 @@ public class ProcessFileEJB implements ProcessFileRemote {
          Long SAPL = Long.parseLong(SAP.trim());
          user.setSap(SAPL);
 
-         user.setCompania((String) token.nextElement());
+         String compania = (String) token.nextElement();
+         compania = compania.toUpperCase();
+         user.setCompania(compania);
          user.setEmail((String) token.nextElement());
 
          String phone = (String) token.nextElement();
          Long phoneL = Long.parseLong(phone.trim());
          user.setPhone(phoneL);
+
+         String cargo = (String) token.nextElement();
+         cargo = cargo.toUpperCase();
+         user.setCargo(cargo);
+
+         String consultaPorCuenta = (String) token.nextElement();
+         consultaPorCuenta = consultaPorCuenta.toUpperCase();
+         user.setConsultaPorCuenta(consultaPorCuenta);
 
          user.setContrasena(cedula);
          user.setEstado(StateEnum.ACTIVO.getValue());
@@ -124,6 +136,15 @@ public class ProcessFileEJB implements ProcessFileRemote {
             token.nextElement();
             String phone = (String) token.nextElement();
             Long.parseLong(phone.trim());
+            token.nextElement();
+            String consultaPorCuenta = (String) token.nextElement();
+            if (consultaPorCuenta.length() > 1) {
+               return "Error de Longitud Consulta por Cuenta (S/N)";
+            }
+            consultaPorCuenta = consultaPorCuenta.toUpperCase();
+            if (!(Constante.SI.equals(consultaPorCuenta) || Constante.NO.equals(consultaPorCuenta))) {
+               return "Consulta por Cuenta debe ser S ó N";
+            }
 
          }
          return Constante.OK;
@@ -144,5 +165,4 @@ public class ProcessFileEJB implements ProcessFileRemote {
       }
 
    }
-
 }

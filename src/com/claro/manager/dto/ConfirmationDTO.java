@@ -1,6 +1,14 @@
 package com.claro.manager.dto;
 
-public class ConfirmationDTO {
+import java.io.Serializable;
+
+
+public class ConfirmationDTO implements Serializable {
+
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -149229958794856991L;
 
    private String name;
 
