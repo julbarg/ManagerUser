@@ -4,7 +4,6 @@
 	<persistence-unit name="ManagerUserPU">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>ManagerUserDS</jta-data-source>
-		<non-jta-data-source>ManagerUserUnManaged</non-jta-data-source>
 		<class>com.claro.manager.entity.UserAllowedEntity</class>
 		<class>com.claro.manager.entity.UsuarioOperacionEntity</class>
 		<class>com.claro.manager.entity.AuditEntity</class>

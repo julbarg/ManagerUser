@@ -21,5 +21,7 @@ public interface AuditDAORemote {
    public ArrayList<AuditEntity> findByIdRegister(int idRegister, String tableName);
 
    public void auditarNew(UsuarioOperacionEntity userNew) throws Exception;
+   
+   
 
 }

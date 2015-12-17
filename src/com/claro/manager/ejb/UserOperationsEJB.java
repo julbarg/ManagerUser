@@ -8,10 +8,14 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import com.claro.manager.dao.AuditDAORemote;
+import com.claro.manager.dao.ReportesDAORemote;
 import com.claro.manager.dao.UserAllowedDAORemote;
 import com.claro.manager.dao.UserOperationDAORemote;
 import com.claro.manager.dto.AuditDTO;
 import com.claro.manager.dto.FilterUserOperationsDTO;
+import com.claro.manager.dto.ReporteCambiosWifiDTO;
+import com.claro.manager.dto.ReporteConsultasDTO;
+import com.claro.manager.dto.ReporteIngresoDTO;
 import com.claro.manager.entity.AuditEntity;
 import com.claro.manager.entity.UserAllowedEntity;
 import com.claro.manager.entity.UsuarioOperacionEntity;
@@ -33,6 +37,9 @@ public class UserOperationsEJB implements UserOperationsEJBRemote {
 
    @EJB
    private AuditDAORemote auditDAO;
+
+   @EJB
+   private ReportesDAORemote reporteDAO;
 
    @Override
    public ArrayList<UsuarioOperacionEntity> searchUser(FilterUserOperationsDTO userOperations) throws Exception {
@@ -118,4 +125,18 @@ public class UserOperationsEJB implements UserOperationsEJBRemote {
       return auditDAO.findAll();
    }
 
+   @Override
+   public ArrayList<ReporteIngresoDTO> searchReporteIngresoByDate(Date dateInitial, Date dateFinal) throws Exception {
+      return reporteDAO.searchReporteIngresoByDate(dateInitial, dateFinal);
+   }
+
+   @Override
+   public ArrayList<ReporteConsultasDTO> searchReporteConsultasByDate(Date dateInitial, Date dateFinal) throws Exception {
+      return reporteDAO.searchReporteConsultasByDate(dateInitial, dateFinal);
+   }
+
+   @Override
+   public ArrayList<ReporteCambiosWifiDTO> searchReporteCambiosWifiByDate(Date dateInitial, Date dateFinal) throws Exception {
+      return reporteDAO.searchReporteCambiosWifiByDate(dateInitial, dateFinal);
+   }
 }

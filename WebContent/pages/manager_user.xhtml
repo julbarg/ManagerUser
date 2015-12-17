@@ -8,6 +8,7 @@
 	<h:outputStylesheet library="css" name="style.css" />
 	<h:outputScript library="primefaces" name="jquery/jquery.js" />
 	<h:outputScript library="js" name="manager.js" />
+
 </h:head>
 <h:body>
 	<ui:include src="dialogs/new_user.xhtml" />
@@ -17,11 +18,13 @@
 	<ui:include src="dialogs/audit.xhtml" />
 	<ui:include src="dialogs/audit_all.xhtml" />
 	<ui:include src="dialogs/manual.xhtml" />
+	<ui:include src="dialogs/report.xhtml" />
 	<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
 	<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false"
 		resizable="false" showHeader="false">
 		<p:graphicImage library="images" name="loading.gif" />
 	</p:dialog>
+
 	<div id="div_login">
 		<h:form id="form_login">
 			<p:panel id="panel_login" styleClass="panel_login" closable="true" toggleable="true">
@@ -53,7 +56,7 @@
 	<div id="div_manager" style="display: none;">
 		<p:panel id="panel_manager" styleClass="panel_manager" closable="true" toggleable="true">
 			<h:form id="form_buttons">
-				<h:panelGrid columns="5" columnClasses="logo,logout,logout,logout" styleClass="header">
+				<h:panelGrid columns="6" columnClasses="logo,logout,logout,logout" styleClass="header">
 					<h:graphicImage library="images" name="logo.gif" alt="logo_claro" height="50" />
 
 					<p:commandButton id="audit_all" onclick="PF('auditAll').show();" value="Auditoria"
@@ -65,6 +68,10 @@
 						title="Configuración de Usaurios Permitidos" rendered="#{operation.admin}"
 						action="#{operation.searchUserAllowed}" update=":user_allowed">
 						<p:tooltip for="config_user" />
+					</p:commandButton>
+					<p:commandButton id="reportes" onclick="PF('report').show();" value="Reportes" title="Reportes"
+						actionListener="#{operation.actionDownload}" update=":form_report">
+						<p:tooltip for="reportes" />
 					</p:commandButton>
 					<p:commandButton id="manual" onclick="PF('manual').show();" value="Ayuda"
 						title="Manual de Usuario">

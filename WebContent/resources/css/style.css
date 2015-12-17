@@ -189,6 +189,13 @@
 	background-color: #F7F7F7;
 }
 
+.panel_report {
+	width: 98%;
+	height: 160px;
+	padding-top: 10px !important;
+	background-color: #F7F7F7;
+}
+
 .dialog_audit {
 	top: 45px !important;
 }

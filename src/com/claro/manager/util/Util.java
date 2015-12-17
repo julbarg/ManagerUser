@@ -1,6 +1,7 @@
 package com.claro.manager.util;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -79,6 +80,18 @@ public class Util {
       Util.getSession().setAttribute(Constante.USER_NAME, userName.getUserNameAllowed());
       boolean admin = ConfirmationEnum.SI.getValue().equals(userName.getAdmin());
       Util.getSession().setAttribute(Constante.ADMIN, admin);
+   }
+
+   public static long substracDatesInDays(Date dateInitial, Date dateFinal) {
+      System.out.println("INITIAL: " + dateInitial);
+      System.out.println("FINAL: " + dateFinal);
+      long diff = Math.abs(dateFinal.getTime() - dateInitial.getTime());
+      System.out.println("DIFF: " + diff);
+      long diffDays = (int) (diff / (24 * 60 * 60 * 1000));
+      System.out.println("DIFF DAYS: " + diffDays);
+
+      return diffDays;
+
    }
 
 }

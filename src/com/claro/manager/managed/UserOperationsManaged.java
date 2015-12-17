@@ -2,7 +2,9 @@ package com.claro.manager.managed;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -15,18 +17,25 @@ import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import com.claro.manager.dto.AuditDTO;
 import com.claro.manager.dto.ConfirmationDTO;
 import com.claro.manager.dto.FilterUserOperationsDTO;
+import com.claro.manager.dto.ReporteCambiosWifiDTO;
+import com.claro.manager.dto.ReporteConsultasDTO;
+import com.claro.manager.dto.ReporteIngresoDTO;
 import com.claro.manager.ejb.ProcessFileRemote;
+import com.claro.manager.ejb.ReportEJBRemote;
 import com.claro.manager.ejb.UserOperationsEJBRemote;
 import com.claro.manager.entity.AuditEntity;
 import com.claro.manager.entity.UserAllowedEntity;
@@ -55,6 +64,9 @@ public class UserOperationsManaged implements Serializable {
 
    @EJB
    private ProcessFileRemote processFile;
+
+   @EJB
+   private ReportEJBRemote reportEJB;
 
    private FilterUserOperationsDTO filterUserOperations;
 
@@ -90,6 +102,16 @@ public class UserOperationsManaged implements Serializable {
 
    private String porCuenta;
 
+   private Date dateInitial;
+
+   private Date dateFinal;
+
+   private StreamedContent fileReport;
+
+   private boolean showDownloadButton;
+
+   private int numberColumnsDownload;
+
    @PostConstruct
    private void initialize() {
       selectedUser = new UsuarioOperacionEntity();
@@ -108,6 +130,8 @@ public class UserOperationsManaged implements Serializable {
       listConsultaPorCuenta = new ArrayList<ConfirmationDTO>();
       listConsultaPorCuenta.add(new ConfirmationDTO("Si", "S"));
       listConsultaPorCuenta.add(new ConfirmationDTO("No", "N"));
+
+      numberColumnsDownload = 1;
    }
 
    public boolean searchUser() {
@@ -318,6 +342,52 @@ public class UserOperationsManaged implements Serializable {
       sheet.setColumnWidth(7, 20 * 256);
    }
 
+   @SuppressWarnings("deprecation")
+   public void generateReport() {
+      try {
+         dateInitial.setHours(0);
+         dateInitial.setMinutes(0);
+         dateFinal.setHours(23);
+         dateFinal.setMinutes(59);
+         if (Util.substracDatesInDays(dateInitial, dateFinal) > Constante.MAX_DAYS_FOR_REPORT) {
+            Util.addMessageInfo("La diferencia entre las fechas no puede ser superior a un mes");
+            return;
+         }
+
+         LOGGER.info("INICIA GENERACION DE REPORTE" + new Date());
+         ArrayList<ReporteIngresoDTO> listReporteIngreso = userOperationsEJB.searchReporteIngresoByDate(dateInitial, dateFinal);
+         ArrayList<ReporteConsultasDTO> listReporteConsultasDTO = userOperationsEJB.searchReporteConsultasByDate(dateInitial, dateFinal);
+         ArrayList<ReporteCambiosWifiDTO> listReporteCambiosWifi = userOperationsEJB.searchReporteCambiosWifiByDate(dateInitial, dateFinal);
+
+         reportEJB.generateReport(listReporteIngreso, listReporteConsultasDTO, listReporteCambiosWifi);
+
+         String extension = FilenameUtils.getExtension(Constante.URL_REPORT);
+         InputStream stream = new FileInputStream(Constante.URL_REPORT.trim());
+         LOGGER.info("FINALIZA GENERACION DE REPORTE" + new Date());
+
+         fileReport = new DefaultStreamedContent(stream, extension, "Report" + "." + extension);
+
+         showDownloadButton = true;
+         numberColumnsDownload = 2;
+
+         Util.addMessageInfo("El Reporte ha sido generado correctamente");
+
+      } catch (Exception e) {
+         LOGGER.info("Error generando reporte" + e);
+         showDownloadButton = false;
+         numberColumnsDownload = 1;
+         Util.addMessageFatal("Ha ocurrido un error al generar el reporte");
+      }
+
+   }
+
+   public void actionDownload() {
+      showDownloadButton = false;
+      numberColumnsDownload = 1;
+      dateInitial = null;
+      dateFinal = null;
+   }
+
    public void closeSesion() {
       listUserOperation = new ArrayList<UsuarioOperacionEntity>();
 
@@ -471,5 +541,46 @@ public class UserOperationsManaged implements Serializable {
 
    public void setListConsultaPorCuenta(ArrayList<ConfirmationDTO> listConsultaPorCuenta) {
       this.listConsultaPorCuenta = listConsultaPorCuenta;
+   }
+
+   public Date getDateInitial() {
+      return dateInitial;
+   }
+
+   public void setDateInitial(Date dateInitial) {
+      this.dateInitial = dateInitial;
+   }
+
+   public Date getDateFinal() {
+      return dateFinal;
+   }
+
+   public void setDateFinal(Date dateFinal) {
+      this.dateFinal = dateFinal;
+   }
+
+   public StreamedContent getFileReport() {
+      return fileReport;
+
+   }
+
+   public void setFileReport(StreamedContent fileReport) {
+      this.fileReport = fileReport;
+   }
+
+   public boolean isShowDownloadButton() {
+      return showDownloadButton;
+   }
+
+   public void setShowDownloadButton(boolean showDownloadButton) {
+      this.showDownloadButton = showDownloadButton;
+   }
+
+   public int getNumberColumnsDownload() {
+      return numberColumnsDownload;
+   }
+
+   public void setNumberColumnsDownload(int numberColumnsDownload) {
+      this.numberColumnsDownload = numberColumnsDownload;
    }
 }
