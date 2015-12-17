@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="Reportes" widgetVar="report" modal="true" resizable="false" draggable="false"
+		width="390" position="center" closeOnEscape="true">
+		<h:form id="form_report">
+			<p:growl />
+			<p:panel styleClass="panel_report">
+				<h:panelGrid columns="2" cellspacing="8">
+					<p:outputLabel for="dateInitial" value="Fecha Inicial:" />
+					<p:calendar id="dateInitial" value="#{operation.dateInitial}" showOn="button" rendered="true" />
+					<p:outputLabel for="dateFinal" value="Fecha Final:" />
+					<p:calendar id="dateFinal" value="#{operation.dateFinal}" showOn="button" rendered="true" />
+					<br />
+					<f:facet name="footer">
+						<div style="text-align: center; width: 350px; margin-left: auto; margin-right: auto">
+							<p:commandButton value="Generar Reporte" update=":form_report"
+								actionListener="#{operation.generateReport()}">
+							</p:commandButton>
+							<p:commandButton value="Descargar" update=":form_report" ajax="false"
+								rendered="#{operation.showDownloadButton}" onclick="PF('report').hide();"
+								style="margin-left: 5px !important;">
+								<p:fileDownload value="#{operation.fileReport}" />
+							</p:commandButton>
+						</div>
+					</f:facet>
+					<br />
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</p:dialog>
+</ui:composition>
